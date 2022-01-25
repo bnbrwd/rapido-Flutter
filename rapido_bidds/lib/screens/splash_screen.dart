@@ -14,48 +14,62 @@ class _SplachScreenState extends State<SplachScreen> {
   }
 
   _navigateToLoginScreen() async {
-    await Future.delayed(Duration(seconds: 3), () {});
+    await Future.delayed(Duration(seconds: 1), () {});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
+  var size, height, width, statusBarHeight;
 
   @override
   Widget build(BuildContext context) {
+    
+    statusBarHeight = MediaQuery.of(context).viewPadding.top;
+    // getting the size of the window
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
+
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('hello'),
-      // ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(height: 50),
-            ClipRRect(
+      body: Column(
+        children: <Widget>[
+          Container(
+            margin: EdgeInsets.only(
+              left: width * 0.22,
+              right: width * 0.22,
+              top: height * 0.085,
+            ),
+            child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Container(
-                height: 200,
-                width: 200,
-                child: Image.asset(
-                  'assets/image/cross.png',
-                  fit: BoxFit.cover,
-                ),
+              child: Image.asset(
+                'assets/image/cross.png',
+                height: height * 0.32,
+                width: width * 0.55,
+                fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 50),
-            Image.asset(
+          ),
+          SizedBox(height: height * 0.068),
+          Container(
+            margin: EdgeInsets.only(
+              left: width * 0.166,
+              right: width * 0.166,
+            ),
+            child: Image.asset(
               'assets/image/rapido_Logo.png',
               fit: BoxFit.cover,
             ),
-            SizedBox(height: 20),
-            // Image.asset(
-            //   'assets/image/verify.png',
-            //   fit: BoxFit.cover,
-            // ),
-            Text('Splash screen with logo',
-                style: Theme.of(context).textTheme.headline6),
-          ],
-        ),
+          ),
+          Container(
+            margin: EdgeInsets.only(
+              left: width * 0.166,
+              right: width * 0.166,
+              top: height * 0.068,
+            ),
+          ),
+        ],
       ),
     );
   }
 }
+
+

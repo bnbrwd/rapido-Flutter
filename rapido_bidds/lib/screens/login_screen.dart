@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../screens/otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -6,6 +7,20 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  @override
+  void initState() {
+    super.initState();
+    _navigateToLoginScreen();
+  }
+
+  _navigateToLoginScreen() async {
+    await Future.delayed(Duration(seconds: 1), () {});
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => OTPScreen()));
+  }
+
+  var size, height, width, statusBarHeight;
+
   final _textEditController = TextEditingController();
 
   var _colorItem = false;
@@ -24,13 +39,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    statusBarHeight = MediaQuery.of(context).viewPadding.top;
+    // getting the size of the window
+    size = MediaQuery.of(context).size;
+    height = size.height;
+    width = size.width;
     return MaterialApp(
       home: Scaffold(
-        // appBar: AppBar(
-        //   title: Text('hello'),
-        // ),
         body: Padding(
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -46,7 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // initialValue: '+91',
                     onChanged: (_) => _checkValidation(),
                     controller: _textEditController,
-                    maxLength: 10,
+                    // maxLength: 10,
                     decoration: InputDecoration(
                       prefixIcon: SizedBox(
                         width: 50,
@@ -76,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 200),
               SizedBox(
                 width: double.infinity,
-                height: 45,
+                height: 48,
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor: _colorItem
