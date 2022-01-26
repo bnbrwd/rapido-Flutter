@@ -45,6 +45,8 @@ flutter:
     - assets/image/cross.png
     - assets/image/rapido_Logo.png
     - assets/image/verify.png
+    - assets/image/eclipse.png
+    - assets/image/Vector.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

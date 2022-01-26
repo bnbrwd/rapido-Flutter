@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
@@ -25,7 +27,6 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
   // }
 
   var mobileNumber = '9887246792';
-  var time = '27';
 
   var size, height, width, statusBarHeight;
   AnimationController controller;
@@ -41,14 +42,38 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
     super.initState();
   }
 
+  Timer _timer;
+  int _start = 30;
+  var _resend = true;
+  void startTimer() {
+    const oneSec = const Duration(seconds: 1);
+    _timer = new Timer.periodic(
+      oneSec,
+      (Timer timer) {
+        if (_start == 0) {
+          setState(() {
+            timer.cancel();
+            _resend = false;
+          });
+        } else {
+          setState(() {
+            _start -= 1;
+          });
+        }
+      },
+    );
+  }
+
   @override
   void dispose() {
     controller.dispose();
+    _timer.cancel();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    startTimer();
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
     // getting the size of the window
     size = MediaQuery.of(context).size;
@@ -101,6 +126,9 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                   onCompleted: (pin) {
                     print("Completed: " + pin);
                   },
+                  onChanged: (pin) {
+                    print("Changed: " + pin);
+                  },
                 ),
               ),
               SizedBox(height: height * 0.018),
@@ -134,13 +162,24 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  Text(
-                    'Resend OTP in ${time}s',
-                    style: TextStyle(
-                      color: Color.fromRGBO(158, 158, 158, 1),
-                      fontSize: 10,
-                    ),
-                    textAlign: TextAlign.end,
+                  Container(
+                    child: _resend
+                        ? Text(
+                            'Resend OTP in ${_timer}s',
+                            style: TextStyle(
+                              color: Color.fromRGBO(158, 158, 158, 1),
+                              fontSize: 10,
+                            ),
+                            textAlign: TextAlign.end,
+                          )
+                        : Text(
+                            'Resend OTP Now',
+                            style: TextStyle(
+                              color: Color.fromRGBO(0, 10, 255, 1),
+                              fontSize: 10,
+                            ),
+                            textAlign: TextAlign.end,
+                          ),
                   ),
                 ],
               ),

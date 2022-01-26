@@ -14,7 +14,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _navigateToLoginScreen() async {
-    await Future.delayed(Duration(seconds: 1), () {});
+    await Future.delayed(Duration(seconds: 3), () {});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => OTPScreen()));
   }
@@ -104,7 +104,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Text('Verify'),
                   onPressed: () {},
                 ),
-              )
+              ),
             ],
           ),
         ),
