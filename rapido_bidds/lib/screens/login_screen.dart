@@ -7,17 +7,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  @override
-  void initState() {
-    super.initState();
-    _navigateToLoginScreen();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _navigateToLoginScreen();
+  // }
 
-  _navigateToLoginScreen() async {
-    await Future.delayed(Duration(seconds: 3), () {});
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => OTPScreen()));
-  }
+  // _navigateToLoginScreen() async {
+  //   await Future.delayed(Duration(seconds: 3), () {});
+  //   Navigator.pushReplacement(
+  //       context, MaterialPageRoute(builder: (context) => OTPScreen()));
+  // }
 
   var size, height, width, statusBarHeight;
 
@@ -34,6 +34,17 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _colorItem = false;
       });
+    }
+  }
+
+  var _formKey = GlobalKey<FormState>();
+
+  void validate() {
+    if (_formKey.currentState.validate()) {
+      Navigator.of(context).pushNamed(OTPScreen.routeName);
+      print('validated');
+    } else {
+      print('Not Validated');
     }
   }
 
@@ -59,25 +70,58 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(height: 25),
               Column(
                 children: <Widget>[
-                  TextFormField(
-                    // initialValue: '+91',
-                    onChanged: (_) => _checkValidation(),
-                    controller: _textEditController,
-                    // maxLength: 10,
-                    decoration: InputDecoration(
-                      prefixIcon: SizedBox(
-                        width: 50,
-                        child: Center(
-                          child: Text(
-                            '+91',
-                            style: TextStyle(color: Colors.black),
+                  // TextFormField(
+                  //   key: _formKey,
+                  //   // initialValue: '+91',
+                  //   onChanged: (_) => _checkValidation(),
+                  //   controller: _textEditController,
+                  //   // maxLength: 10,
+                  //   decoration: InputDecoration(
+                  //     prefixIcon: SizedBox(
+                  //       width: 50,
+                  //       child: Center(
+                  //         child: Text(
+                  //           '+91',
+                  //           style: TextStyle(color: Colors.black),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //     labelText: 'Phone number',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  //   keyboardType: TextInputType.number,
+                  // ),
+                  Form(
+                    key: _formKey,
+                    child: TextFormField(
+                      onChanged: (_) => _checkValidation(),
+                      controller: _textEditController,
+                      maxLength: 10,
+                      decoration: InputDecoration(
+                          counter: SizedBox.shrink(),
+                          prefixIcon: SizedBox(
+                            width: 50,
+                            child: Center(
+                              child: Text(
+                                '+91',
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                      labelText: 'Phone number',
-                      border: OutlineInputBorder(),
+                          labelText: 'Phone number',
+                          border: OutlineInputBorder()),
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Required';
+                        }
+                        if (value.length != 10) {
+                          return 'enter valid phone number';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
-                    keyboardType: TextInputType.number,
                   ),
                 ],
               ),
@@ -102,7 +146,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     foregroundColor: MaterialStateProperty.all(Colors.white),
                   ),
                   child: Text('Verify'),
-                  onPressed: () {},
+                  onPressed: () {
+                    // Navigator.of(context).pushNamed(OTPScreen.routeName);
+                    validate();
+                  },
                 ),
               ),
             ],

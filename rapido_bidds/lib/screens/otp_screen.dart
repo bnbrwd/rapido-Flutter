@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../screens/location_permission_given.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 
 class OTPScreen extends StatefulWidget {
+  static const routeName = '/otpscreen';
   @override
   State<OTPScreen> createState() => _OTPScreenState();
 }
@@ -165,7 +167,6 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                   Container(
                     child: _resend
                         ? Text(
-                          
                             'Resend OTP in ${_start}s',
                             style: TextStyle(
                               color: Color.fromRGBO(158, 158, 158, 1),
@@ -199,7 +200,9 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                     'Verify',
                     style: TextStyle(fontSize: height * 0.03),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(LocationPermissionGiven.routeName);
+                  },
                 ),
               ),
             ],

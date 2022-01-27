@@ -14,7 +14,7 @@ class _SplachScreenState extends State<SplachScreen> {
   }
 
   _navigateToLoginScreen() async {
-    await Future.delayed(Duration(seconds: 3), () {});
+    await Future.delayed(Duration(seconds: 2), () {});
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginScreen()));
   }
