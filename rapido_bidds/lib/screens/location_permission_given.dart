@@ -9,6 +9,8 @@ class LocationPermissionGiven extends StatefulWidget {
 }
 
 class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
+  final _cityFocusNode =
+      FocusNode(); //used to jump to next input form by pressing nextButton from keypad.
   var size, height, width, statusBarHeight;
 
   var _formKey = GlobalKey<FormState>();
@@ -20,6 +22,13 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
     } else {
       print('Not Validated');
     }
+  }
+
+  // used node to be sure that clear up that memory, free up memory that they have occupied.
+  @override
+  void dispose() {
+    _cityFocusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -145,6 +154,11 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_cityFocusNode);
+                    //jump to next form from title for focus when we click next from kaypad. i.e price form field
+                  },
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Required';
@@ -189,6 +203,8 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.name,
+                  textInputAction: TextInputAction.next,
+                  focusNode: _cityFocusNode, //focus register
                   validator: (value) {
                     if (value.isEmpty) {
                       return 'Required';
