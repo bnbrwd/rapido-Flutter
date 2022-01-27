@@ -60,9 +60,32 @@ class _LocationPermissionNotGivenState
                     ),
                   ),
                   Container(
-                    child: GestureDetector(
-                      child: Image.asset('assets/image/eclipse.png'),
-                      onTap: () {},
+                    // child: GestureDetector(
+                    //   child: Image.asset('assets/image/eclipse.png'),
+                    //   onTap: () {},
+                    // ),
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                          alignment: Alignment.center,
+                          child: GestureDetector(
+                            child: Image.asset('assets/image/eclipse.png'),
+                            onTap: () {},
+                          ),
+                        ),
+                        Positioned(
+                          top: height * 0.02,
+                          left: width * 0.04,
+                          child: GestureDetector(
+                            child: Image.asset(
+                              'assets/image/drwer.png',
+                              height: height * 0.023,
+                              width: width * 0.051,
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -78,7 +101,7 @@ class _LocationPermissionNotGivenState
                   ),
                 ),
               ),
-              SizedBox(height: height * 0.071),
+              SizedBox(height: height * 0.0375),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Text(

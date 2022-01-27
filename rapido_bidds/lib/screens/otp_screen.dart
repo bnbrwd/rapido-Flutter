@@ -32,6 +32,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
   AnimationController controller;
   @override
   void initState() {
+    startTimer();
     controller = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
@@ -73,7 +74,6 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    startTimer();
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
     // getting the size of the window
     size = MediaQuery.of(context).size;
@@ -165,7 +165,8 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                   Container(
                     child: _resend
                         ? Text(
-                            'Resend OTP in ${_timer}s',
+                          
+                            'Resend OTP in ${_start}s',
                             style: TextStyle(
                               color: Color.fromRGBO(158, 158, 158, 1),
                               fontSize: 10,

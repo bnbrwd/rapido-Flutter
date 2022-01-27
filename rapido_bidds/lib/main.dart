@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Rapido Screen',
-      // home: SplachScreen(),
+      home: SplachScreen(),
       // home: LocationPermissionGiven(),
-      home: LocationPermissionNotGiven(),
+      // home: LocationPermissionNotGiven(),
       debugShowCheckedModeBanner: false,
     );
   }
