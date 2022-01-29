@@ -1,4 +1,7 @@
+import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../screens/otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -24,6 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _textEditController = TextEditingController();
 
   var _colorItem = false;
+  var _validateInputText = false;
 
   void _checkValidation() {
     if (_textEditController.text.length >= 10) {
@@ -48,6 +52,127 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  bool str = true;
+
+  String getValidationMsg() {
+    if (str) {
+      return '';
+    } else {
+      return 'Invalid';
+    }
+  }
+
+  Widget getAndroidForm() {
+    return TextFormField(
+      onChanged: (_) => _checkValidation(),
+      controller: _textEditController,
+      maxLength: 10,
+      decoration: InputDecoration(
+          errorStyle: TextStyle(
+              color: _colorItem
+                  ? Color.fromRGBO(96, 173, 156, 1)
+                  : Color.fromRGBO(230, 57, 70, 1)),
+          focusedBorder: OutlineInputBorder(
+              borderSide: !_colorItem
+                  ? BorderSide(color: Colors.grey)
+                  : BorderSide(color: Colors.green)),
+          counter: SizedBox.shrink(),
+          prefixIcon: SizedBox(
+            width: width * 0.075,
+            height: height * 0.0375,
+            child: Center(
+              child: Text(
+                '+91',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ),
+          labelText: 'Phone number',
+          // hintText: 'Phone number',
+          labelStyle:
+              TextStyle(color: !_colorItem ? Colors.grey : Colors.green),
+          border: OutlineInputBorder()),
+      keyboardType: TextInputType.number,
+    );
+  }
+
+  Widget getiOSForm() {
+    return Container(
+      height: height * 0.087,
+      width: width * 0.911,
+      child: CupertinoTextField(
+        onChanged: (_) => _checkValidation(),
+        controller: _textEditController,
+        maxLength: 10,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(6),
+          border: !_colorItem
+              ? Border.all(color: Colors.grey)
+              : Border.all(color: Colors.green),
+        ),
+        prefix: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: SizedBox(
+            width: width * 0.075,
+            height: height * 0.0375,
+            child: Center(
+              child: Text(
+                '+91',
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ),
+        ),
+        placeholder: 'Phone number',
+        keyboardType: TextInputType.number,
+      ),
+    );
+  }
+
+  Widget _getAndroidButton() {
+    return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: _colorItem
+            ? MaterialStateProperty.all(Colors.yellow[600])
+            : MaterialStateProperty.all(Colors.grey[400]),
+        foregroundColor: MaterialStateProperty.all(Colors.black),
+      ),
+      child: Text(
+        'Verify',
+        style: TextStyle(fontSize: 16),
+      ),
+      onPressed: () {
+        // Navigator.of(context).pushNamed(OTPScreen.routeName);
+        // validate();
+        if (_colorItem) {
+          Navigator.of(context).pushNamed(OTPScreen.routeName);
+        } else {
+          setState(() {
+            _validateInputText = true;
+          });
+        }
+      },
+    );
+  }
+
+  Widget _getiOSButton() {
+    return CupertinoButton(
+        color: _colorItem ? Colors.yellow[600] : Colors.grey[400],
+        child: Text(
+          'Verify',
+          style: TextStyle(fontSize: 16, color: Colors.black),
+        ),
+        onPressed: () {
+          if (_colorItem) {
+            Navigator.of(context).pushNamed(OTPScreen.routeName);
+          } else {
+            setState(() {
+              _validateInputText = true;
+            });
+          }
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
@@ -55,107 +180,70 @@ class _LoginScreenState extends State<LoginScreen> {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
-    return MaterialApp(
-      home: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    var padding2 = Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(height: height * 0.075),
+          Platform.isIOS
+              ? Text(
+                  'Login to your account',
+                  style: TextStyle(fontSize: 25),
+                )
+              : Text(
+                  'Login to your account',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+          SizedBox(height: height * 0.04),
+          Column(
             children: <Widget>[
-              SizedBox(height: 40),
-              Text(
-                'Login to your account',
-                style: Theme.of(context).textTheme.headline6,
+              Form(
+                key: _formKey,
+                child: Platform.isIOS ? getiOSForm() : getAndroidForm(),
               ),
-              SizedBox(height: 25),
-              Column(
-                children: <Widget>[
-                  // TextFormField(
-                  //   key: _formKey,
-                  //   // initialValue: '+91',
-                  //   onChanged: (_) => _checkValidation(),
-                  //   controller: _textEditController,
-                  //   // maxLength: 10,
-                  //   decoration: InputDecoration(
-                  //     prefixIcon: SizedBox(
-                  //       width: 50,
-                  //       child: Center(
-                  //         child: Text(
-                  //           '+91',
-                  //           style: TextStyle(color: Colors.black),
-                  //         ),
-                  //       ),
-                  //     ),
-                  //     labelText: 'Phone number',
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  //   keyboardType: TextInputType.number,
-                  // ),
-                  Form(
-                    key: _formKey,
-                    child: TextFormField(
-                      onChanged: (_) => _checkValidation(),
-                      controller: _textEditController,
-                      maxLength: 10,
-                      decoration: InputDecoration(
-                          counter: SizedBox.shrink(),
-                          prefixIcon: SizedBox(
-                            width: 50,
-                            child: Center(
-                              child: Text(
-                                '+91',
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            ),
-                          ),
-                          labelText: 'Phone number',
-                          border: OutlineInputBorder()),
-                      keyboardType: TextInputType.number,
-                      validator: (value) {
-                        if (value.isEmpty) {
-                          return 'Required';
-                        }
-                        if (value.length != 10) {
-                          return 'enter valid phone number';
-                        } else {
-                          return null;
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
+            ],
+          ),
+          SizedBox(height: height * 0.006),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
               Text(
                 'OTP will be sent to this number',
                 style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 15,
+                  fontSize: 12,
                 ),
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: 200),
-              SizedBox(
-                width: double.infinity,
-                height: 48,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: _colorItem
-                        ? MaterialStateProperty.all(Colors.yellow[600])
-                        : MaterialStateProperty.all(Colors.grey[400]),
-                    foregroundColor: MaterialStateProperty.all(Colors.white),
-                  ),
-                  child: Text('Verify'),
-                  onPressed: () {
-                    // Navigator.of(context).pushNamed(OTPScreen.routeName);
-                    validate();
-                  },
-                ),
-              ),
+              _validateInputText
+                  ? Text(
+                      'Invalid',
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.start,
+                    )
+                  : Text(''),
             ],
           ),
-        ),
+          SizedBox(height: height * 0.198),
+          SizedBox(
+              width: double.infinity,
+              height: height * 0.075,
+              child: Platform.isIOS ? _getiOSButton() : _getAndroidButton()),
+        ],
       ),
     );
+    return Platform.isIOS
+        ? CupertinoPageScaffold(
+            child: padding2,
+          )
+        : MaterialApp(
+            home: Scaffold(
+              body: padding2,
+            ),
+          );
   }
 }
