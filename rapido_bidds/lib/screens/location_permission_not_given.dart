@@ -1,4 +1,5 @@
-import 'package:dropdown_formfield/dropdown_formfield.dart';
+import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../screens/location_permission_given.dart';
 
@@ -41,10 +42,85 @@ class _LocationPermissionNotGivenState
     height = size.height;
     width = size.width;
 
+    Widget _getiOSFormForName() {
+      return Container(
+        child: CupertinoTextFormFieldRow(
+          // prefix: Text('Hello'),
+          padding: EdgeInsets.only(
+            left: width * 0.005,
+            right: width * 0.005,
+          ),
+          // decoration: BoxDecoration(
+          //   border: Border.all(),
+          //   borderRadius: BorderRadius.circular(5),
+          // ),
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(width: 1, color: Colors.black54)),
+            // borderRadius: BorderRadius.circular(5),
+          ),
+          textInputAction: TextInputAction.done,
+          onFieldSubmitted: (_) {
+            FocusScope.of(context).requestFocus(_cityFocusNode);
+            //jump to next form from title for focus when we click next from kaypad. i.e price form field
+          },
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Required';
+            }
+            if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
+              return null;
+            }
+            if (value.startsWith(RegExp(r'[0-9]'))) {
+              return 'please enter valid name';
+            } else {
+              return null;
+            }
+          },
+        ),
+      );
+    }
+
+    Widget _getiOSForm() {
+      return Container(
+        child: CupertinoTextFormFieldRow(
+          // prefix: Text('Hello'),
+          padding: EdgeInsets.only(
+            left: width * 0.005,
+            right: width * 0.005,
+          ),
+
+          // decoration: BoxDecoration(
+          //   border: Border.all(),
+          //   borderRadius: BorderRadius.circular(5),
+          // ),
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(width: 1, color: Colors.black54)),
+            // borderRadius: BorderRadius.circular(5),
+          ),
+
+          // textInputAction: TextInputAction.done,
+          // onFieldSubmitted: (_) {
+          //   FocusScope.of(context).requestFocus(_cityFocusNode);
+          //   //jump to next form from title for focus when we click next from kaypad. i.e price form field
+          // },
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Required';
+            }
+            if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
+              return null;
+            }
+            if (value.startsWith(RegExp(r'[0-9]'))) {
+              return 'select a valid city';
+            } else {
+              return null;
+            }
+          },
+        ),
+      );
+    }
+
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('kk'),
-      // ),
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.only(
@@ -73,17 +149,31 @@ class _LocationPermissionNotGivenState
                               onTap: () {},
                             ),
                           ),
-                          Positioned(
-                            top: height * 0.02,
-                            left: width * 0.04,
-                            child: GestureDetector(
-                              child: Image.asset('assets/image/Vector.png'),
-                              onTap: () {
-                                Navigator.of(context).pushNamed(
-                                    LocationPermissionGiven.routeName);
-                              },
-                            ),
-                          ),
+                          Platform.isIOS
+                              ? Positioned(
+                                  top: height * 0.015,
+                                  left: width * 0.036,
+                                  child: GestureDetector(
+                                    child:
+                                        Image.asset('assets/image/Vector.png'),
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                          LocationPermissionGiven.routeName);
+                                    },
+                                  ),
+                                )
+                              : Positioned(
+                                  top: height * 0.02,
+                                  left: width * 0.04,
+                                  child: GestureDetector(
+                                    child:
+                                        Image.asset('assets/image/Vector.png'),
+                                    onTap: () {
+                                      Navigator.of(context).pushNamed(
+                                          LocationPermissionGiven.routeName);
+                                    },
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -101,18 +191,31 @@ class _LocationPermissionNotGivenState
                               onTap: () {},
                             ),
                           ),
-                          Positioned(
-                            top: height * 0.02,
-                            left: width * 0.04,
-                            child: GestureDetector(
-                              child: Image.asset(
-                                'assets/image/drwer.png',
-                                height: height * 0.023,
-                                width: width * 0.051,
-                              ),
-                              onTap: () {},
-                            ),
-                          ),
+                          Platform.isIOS
+                              ? Positioned(
+                                  top: height * 0.012,
+                                  left: width * 0.035,
+                                  child: GestureDetector(
+                                    child: Image.asset(
+                                      'assets/image/drwer.png',
+                                      height: height * 0.023,
+                                      width: width * 0.051,
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                )
+                              : Positioned(
+                                  top: height * 0.02,
+                                  left: width * 0.04,
+                                  child: GestureDetector(
+                                    child: Image.asset(
+                                      'assets/image/drwer.png',
+                                      height: height * 0.023,
+                                      width: width * 0.051,
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -151,32 +254,34 @@ class _LocationPermissionNotGivenState
                 //   ),
                 //   keyboardType: TextInputType.name,
                 // ),
-                TextFormField(
-                  // maxLength: 10,
-                  decoration: InputDecoration(
-                    counter: SizedBox.shrink(),
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_cityFocusNode);
-                    //jump to next form from title for focus when we click next from kaypad. i.e price form field
-                  },
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Required';
-                    }
-                    if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
-                      return null;
-                    }
-                    if (value.startsWith(RegExp(r'[0-9]'))) {
-                      return 'please enter valid name';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
+                Platform.isIOS
+                    ? _getiOSFormForName()
+                    : TextFormField(
+                        // maxLength: 10,
+                        decoration: InputDecoration(
+                          counter: SizedBox.shrink(),
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_cityFocusNode);
+                          //jump to next form from title for focus when we click next from kaypad. i.e price form field
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Required';
+                          }
+                          if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
+                            return null;
+                          }
+                          if (value.startsWith(RegExp(r'[0-9]'))) {
+                            return 'please enter valid name';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
                 SizedBox(height: height * 0.025),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -199,29 +304,31 @@ class _LocationPermissionNotGivenState
                 //   ),
                 //   keyboardType: TextInputType.name,
                 // ),
-                TextFormField(
-                  // maxLength: 10,
-                  decoration: InputDecoration(
-                    counter: SizedBox.shrink(),
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  focusNode: _cityFocusNode, //focus register
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Required';
-                    }
-                    if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
-                      return null;
-                    }
-                    if (value.startsWith(RegExp(r'[0-9]'))) {
-                      return 'select a valid city';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
+                Platform.isIOS
+                    ? _getiOSForm()
+                    : TextFormField(
+                        // maxLength: 10,
+                        decoration: InputDecoration(
+                          counter: SizedBox.shrink(),
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        focusNode: _cityFocusNode, //focus register
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Required';
+                          }
+                          if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
+                            return null;
+                          }
+                          if (value.startsWith(RegExp(r'[0-9]'))) {
+                            return 'select a valid city';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
                 SizedBox(height: height * (31 / 640)),
                 SizedBox(
                   width: double.infinity,

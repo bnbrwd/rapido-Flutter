@@ -1,8 +1,11 @@
+import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import '../screens/location_permission_given.dart';
 import 'package:otp_text_field/otp_text_field.dart';
+import 'package:otp_screen/otp_screen.dart';
+import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 
 class OTPScreen extends StatefulWidget {
@@ -82,133 +85,149 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
     height = size.height;
     width = size.width;
 
-    return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(
-            left: width * 0.044,
-            right: width * 0.044,
-            top: height * 0.10,
-          ),
-          // height: height * 0.075,
-          // width: width * 0.91,
-          child: Column(
-            children: <Widget>[
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Enter the OTP',
-                  style: TextStyle(
-                    color: Color.fromRGBO(32, 33, 34, 1),
-                    fontSize: 22,
-                  ),
+    var _otpTextField = OTPTextField(
+      length: 6,
+      width: width * 0.91,
+      fieldWidth: width * 0.109,
+      style: TextStyle(fontSize: 17),
+      textFieldAlignment: MainAxisAlignment.spaceAround,
+      fieldStyle: FieldStyle.underline,
+      onCompleted: (pin) {
+        print("Completed: " + pin);
+      },
+      onChanged: (pin) {
+        print("Changed: " + pin);
+      },
+    );
+
+    var _singleChildScrollView = SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.only(
+          left: width * 0.044,
+          right: width * 0.044,
+          top: height * 0.10,
+        ),
+        // height: height * 0.075,
+        // width: width * 0.91,
+        child: Column(
+          children: <Widget>[
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Enter the OTP',
+                style: TextStyle(
+                  color: Color.fromRGBO(32, 33, 34, 1),
+                  fontSize: 22,
                 ),
               ),
-              SizedBox(height: height * 0.018),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'We have sent an OTP to ${mobileNumber}',
-                  style: TextStyle(
-                    color: Color.fromRGBO(158, 158, 158, 1),
-                    fontSize: 13,
-                  ),
+            ),
+            SizedBox(height: height * 0.018),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'We have sent an OTP to ${mobileNumber}',
+                style: TextStyle(
+                  color: Color.fromRGBO(158, 158, 158, 1),
+                  fontSize: 13,
                 ),
               ),
-              SizedBox(height: height * 0.009),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: OTPTextField(
-                  length: 6,
-                  width: width * 0.91,
-                  fieldWidth: width * 0.109,
-                  style: TextStyle(fontSize: 17),
-                  textFieldAlignment: MainAxisAlignment.spaceAround,
-                  fieldStyle: FieldStyle.underline,
-                  onCompleted: (pin) {
-                    print("Completed: " + pin);
-                  },
-                  onChanged: (pin) {
-                    print("Changed: " + pin);
-                  },
-                ),
-              ),
-              SizedBox(height: height * 0.018),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: [
-                      Container(
-                        height: height * 0.025,
-                        width: width * 0.050,
-                        child: CircularProgressIndicator(
-                          value: controller.value,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.orange),
-                          semanticsLabel: 'Linear progress indicator',
-                          strokeWidth: 3,
+            ),
+            SizedBox(height: height * 0.009),
+            Align(
+              alignment: Alignment.centerLeft,
+              child:
+                  Platform.isIOS ? _otpTextField : _otpTextField,
+            ),
+            SizedBox(height: height * 0.018),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: [
+                    Container(
+                      height: height * 0.025,
+                      width: width * 0.050,
+                      child: CircularProgressIndicator(
+                        value: controller.value,
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.orange),
+                        semanticsLabel: 'Linear progress indicator',
+                        strokeWidth: 3,
+                      ),
+                    ),
+                    SizedBox(
+                      width: width * 0.027,
+                    ),
+                    Container(
+                      child: Text(
+                        'Auto verifying',
+                        style: TextStyle(
+                          color: Color.fromRGBO(158, 158, 158, 1),
+                          fontSize: 10,
                         ),
                       ),
-                      SizedBox(
-                        width: width * 0.027,
-                      ),
-                      Container(
-                        child: Text(
-                          'Auto verifying',
+                    ),
+                  ],
+                ),
+                Container(
+                  child: _resend
+                      ? Text(
+                          'Resend OTP in ${_start}s',
                           style: TextStyle(
                             color: Color.fromRGBO(158, 158, 158, 1),
                             fontSize: 10,
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    child: _resend
-                        ? Text(
-                            'Resend OTP in ${_start}s',
-                            style: TextStyle(
-                              color: Color.fromRGBO(158, 158, 158, 1),
-                              fontSize: 10,
-                            ),
-                            textAlign: TextAlign.end,
-                          )
-                        : Text(
-                            'Resend OTP Now',
-                            style: TextStyle(
-                              color: Color.fromRGBO(0, 10, 255, 1),
-                              fontSize: 10,
-                            ),
-                            textAlign: TextAlign.end,
+                          textAlign: TextAlign.end,
+                        )
+                      : Text(
+                          'Resend OTP Now',
+                          style: TextStyle(
+                            color: Color.fromRGBO(0, 10, 255, 1),
+                            fontSize: 10,
                           ),
-                  ),
-                ],
-              ),
-              SizedBox(height: height * 0.203),
-              SizedBox(
-                width: double.infinity,
-                height: height * 0.07,
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(249, 216, 21, 1)),
-                    foregroundColor: MaterialStateProperty.all(
-                        Color.fromRGBO(32, 33, 34, 1)),
-                  ),
-                  child: Text(
-                    'Verify',
-                    style: TextStyle(fontSize: height * 0.03),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushNamed(LocationPermissionGiven.routeName);
-                  },
+                          textAlign: TextAlign.end,
+                        ),
                 ),
+              ],
+            ),
+            SizedBox(height: height * 0.203),
+            SizedBox(
+              width: double.infinity,
+              height: height * 0.07,
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(
+                      Color.fromRGBO(249, 216, 21, 1)),
+                  foregroundColor: MaterialStateProperty.all(
+                      Color.fromRGBO(32, 33, 34, 1)),
+                ),
+                child: Text(
+                  'Verify',
+                  style: TextStyle(fontSize: height * 0.03),
+                ),
+                onPressed: () {
+                  Navigator.of(context)
+                      .pushNamed(LocationPermissionGiven.routeName);
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
+    );
+    return Localizations(
+      locale: const Locale('en', 'US'),
+      delegates: <LocalizationsDelegate<dynamic>>[
+        DefaultWidgetsLocalizations.delegate,
+        DefaultMaterialLocalizations.delegate,
+      ],
+      child: Platform.isIOS
+          ? Scaffold(
+              body: _singleChildScrollView,
+            )
+          : Scaffold(
+              body: _singleChildScrollView,
+            ),
     );
   }
 }

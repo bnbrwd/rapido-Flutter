@@ -30,8 +30,11 @@ class _SplachScreenState extends State<SplachScreen> {
     height = size.height;
     width = size.width;
 
+    
+
     var continer1 = <Widget>[
       Container(
+        
         margin: EdgeInsets.only(
           left: width * 0.22,
           right: width * 0.22,
@@ -59,6 +62,7 @@ class _SplachScreenState extends State<SplachScreen> {
         ),
       ),
     ];
+
     return Platform.isIOS
         ? CupertinoPageScaffold(
             child: Column(

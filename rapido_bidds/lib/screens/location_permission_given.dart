@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../screens/location_permission_not_given.dart';
 
@@ -31,6 +33,18 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
     super.dispose();
   }
 
+  // void _checkValidation() {
+  //   if (_textEditController != null) {
+  //     setState(() {
+  //       _colorItem = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _colorItem = false;
+  //     });
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
@@ -39,11 +53,106 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
     height = size.height;
     width = size.width;
 
-    return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('kk'),
-      // ),
+    Widget _getiOSFormForName() {
+      return Container(
+        child: CupertinoTextFormFieldRow(
+          // prefix: Text('Hello'),
+          padding: EdgeInsets.only(
+            left: width * 0.005,
+            right: width * 0.005,
+          ),
+          // decoration: BoxDecoration(
+          //   border: Border.all(),
+          //   borderRadius: BorderRadius.circular(5),
+          // ),
+          decoration: BoxDecoration(
+              border:
+                  Border(bottom: BorderSide(width: 1, color: Colors.black54)),
+              // borderRadius: BorderRadius.circular(5),
+            ),
+          textInputAction: TextInputAction.done,
+          onFieldSubmitted: (_) {
+            FocusScope.of(context).requestFocus(_cityFocusNode);
+            //jump to next form from title for focus when we click next from kaypad. i.e price form field
+          },
+          validator: (value) {
+            if (value.isEmpty) {
+              return 'Required';
+            }
+            if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
+              return null;
+            }
+            if (value.startsWith(RegExp(r'[0-9]'))) {
+              return 'please enter valid name';
+            } else {
+              return null;
+            }
+          },
+        ),
+      );
+    }
 
+    Widget _getiOSForm() {
+      return Container(
+        // height: height * 0.087,
+        // width: width * 0.911,
+        // child: CupertinoTextField(
+        //   // onChanged: (_) => _checkValidation(),
+        //   controller: _textEditController,
+        //   // maxLength: 10,
+        //   maxLines: 1,
+        //   decoration: BoxDecoration(
+        //     borderRadius: BorderRadius.circular(6),
+        //     border: Border.all(color: Colors.black),
+        //   ),
+        //   prefix: Padding(
+        //     padding: const EdgeInsets.only(left: 8),
+        //   ),
+        //   // placeholder: 'Phone number',
+        //   keyboardType: TextInputType.name,
+        // ),
+
+        child:  CupertinoTextFormFieldRow(
+            // prefix: Text('Hello'),
+            padding: EdgeInsets.only(
+              left: width * 0.005,
+              right: width * 0.005,
+            ),
+
+            // decoration: BoxDecoration(
+            //   border: Border.all(),
+            //   borderRadius: BorderRadius.circular(5),
+            // ),
+            decoration: BoxDecoration(
+              border:
+                  Border(bottom: BorderSide(width: 1, color: Colors.black54)),
+              // borderRadius: BorderRadius.circular(5),
+            ),
+
+            // textInputAction: TextInputAction.done,
+            // onFieldSubmitted: (_) {
+            //   FocusScope.of(context).requestFocus(_cityFocusNode);
+            //   //jump to next form from title for focus when we click next from kaypad. i.e price form field
+            // },
+            validator: (value) {
+              if (value.isEmpty) {
+                return 'Required';
+              }
+              if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
+                return null;
+              }
+              if (value.startsWith(RegExp(r'[0-9]'))) {
+                return 'please enter valid City';
+              } else {
+                return null;
+              }
+            },
+          ),
+        
+      );
+    }
+
+    return Scaffold(
       body: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.only(
@@ -72,14 +181,25 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                               onTap: () {},
                             ),
                           ),
-                          Positioned(
-                            top: height * 0.02,
-                            left: width * 0.04,
-                            child: GestureDetector(
-                              child: Image.asset('assets/image/Vector.png'),
-                              onTap: () {},
-                            ),
-                          ),
+                          Platform.isIOS
+                              ? Positioned(
+                                  top: height * 0.015,
+                                  left: width * 0.036,
+                                  child: GestureDetector(
+                                    child:
+                                        Image.asset('assets/image/Vector.png'),
+                                    onTap: () {},
+                                  ),
+                                )
+                              : Positioned(
+                                  top: height * 0.02,
+                                  left: width * 0.04,
+                                  child: GestureDetector(
+                                    child:
+                                        Image.asset('assets/image/Vector.png'),
+                                    onTap: () {},
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -97,18 +217,31 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                               onTap: () {},
                             ),
                           ),
-                          Positioned(
-                            top: height * 0.02,
-                            left: width * 0.04,
-                            child: GestureDetector(
-                              child: Image.asset(
-                                'assets/image/drwer.png',
-                                height: height * 0.023,
-                                width: width * 0.051,
-                              ),
-                              onTap: () {},
-                            ),
-                          ),
+                          Platform.isIOS
+                              ? Positioned(
+                                  top: height * 0.012,
+                                  left: width * 0.035,
+                                  child: GestureDetector(
+                                    child: Image.asset(
+                                      'assets/image/drwer.png',
+                                      height: height * 0.023,
+                                      width: width * 0.051,
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                )
+                              : Positioned(
+                                  top: height * 0.017,
+                                  left: width * 0.04,
+                                  child: GestureDetector(
+                                    child: Image.asset(
+                                      'assets/image/drwer.png',
+                                      height: height * 0.023,
+                                      width: width * 0.051,
+                                    ),
+                                    onTap: () {},
+                                  ),
+                                ),
                         ],
                       ),
                     ),
@@ -137,43 +270,34 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                   ),
                 ),
                 SizedBox(height: height * 0.012),
-                // TextFormField(
-                //   // onChanged: (_) => _checkValidation(),
-                //   // controller: _textEditController,
-                //   // maxLength: 10,
-                //   decoration: InputDecoration(
-                //     // labelText: 'Phone number',
-                //     border: OutlineInputBorder(),
-                //   ),
-                //   keyboardType: TextInputType.name,
-                // ),
-                TextFormField(
-                  // maxLength: 10,
-                  decoration: InputDecoration(
-                    counter: SizedBox.shrink(),
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  onFieldSubmitted: (_) {
-                    FocusScope.of(context).requestFocus(_cityFocusNode);
-                    //jump to next form from title for focus when we click next from kaypad. i.e price form field
-                  },
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Required';
-                    }
-                    if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
-                      return null;
-                    }
-                    if (value.startsWith(RegExp(r'[0-9]'))) {
-                      return 'please enter valid name';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
-
+                Platform.isIOS
+                    ? _getiOSFormForName()
+                    : TextFormField(
+                        // maxLength: 10,
+                        decoration: InputDecoration(
+                          counter: SizedBox.shrink(),
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus(_cityFocusNode);
+                          //jump to next form from title for focus when we click next from kaypad. i.e price form field
+                        },
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Required';
+                          }
+                          if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
+                            return null;
+                          }
+                          if (value.startsWith(RegExp(r'[0-9]'))) {
+                            return 'please enter valid name';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
                 SizedBox(height: height * 0.025),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -186,39 +310,31 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                   ),
                 ),
                 SizedBox(height: height * 0.012),
-                // TextFormField(
-                //   // onChanged: (_) => _checkValidation(),
-                //   // controller: _textEditController,
-                //   // maxLength: 10,
-                //   decoration: InputDecoration(
-                //     // labelText: 'Phone number',
-                //     border: OutlineInputBorder(),
-                //   ),
-                //   keyboardType: TextInputType.name,
-                // ),
-                TextFormField(
-                  // maxLength: 10,
-                  decoration: InputDecoration(
-                    counter: SizedBox.shrink(),
-                    border: OutlineInputBorder(),
-                  ),
-                  keyboardType: TextInputType.name,
-                  textInputAction: TextInputAction.next,
-                  focusNode: _cityFocusNode, //focus register
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Required';
-                    }
-                    if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
-                      return null;
-                    }
-                    if (value.startsWith(RegExp(r'[0-9]'))) {
-                      return 'please enter valid City';
-                    } else {
-                      return null;
-                    }
-                  },
-                ),
+                Platform.isIOS
+                    ? _getiOSForm()
+                    : TextFormField(
+                        // maxLength: 10,
+                        decoration: InputDecoration(
+                          counter: SizedBox.shrink(),
+                          border: OutlineInputBorder(),
+                        ),
+                        keyboardType: TextInputType.name,
+                        textInputAction: TextInputAction.next,
+                        focusNode: _cityFocusNode, //focus register
+                        validator: (value) {
+                          if (value.isEmpty) {
+                            return 'Required';
+                          }
+                          if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
+                            return null;
+                          }
+                          if (value.startsWith(RegExp(r'[0-9]'))) {
+                            return 'please enter valid City';
+                          } else {
+                            return null;
+                          }
+                        },
+                      ),
                 SizedBox(height: height * (31 / 640)),
                 SizedBox(
                   width: double.infinity,
