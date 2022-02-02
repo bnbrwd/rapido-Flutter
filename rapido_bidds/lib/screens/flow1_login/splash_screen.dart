@@ -1,7 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../screens/login_screen.dart';
+import 'login_screen.dart';
 
 class SplachScreen extends StatefulWidget {
   @override

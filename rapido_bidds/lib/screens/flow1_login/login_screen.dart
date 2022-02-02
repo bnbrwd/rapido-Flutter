@@ -2,7 +2,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../screens/otp_screen.dart';
+import 'otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override

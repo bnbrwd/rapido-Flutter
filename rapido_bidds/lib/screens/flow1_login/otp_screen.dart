@@ -2,7 +2,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
-import '../screens/location_permission_given.dart';
+import 'location_permission_given.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_screen/otp_screen.dart';
 import 'package:otp_text_field/otp_field.dart';
