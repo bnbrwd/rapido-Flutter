@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -9,7 +10,9 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   var size, height, width, statusBarHeight;
 
-  final controller = PageController(viewportFraction: 0.8, keepPage: true);
+  AnimationController animationController;
+
+  final controller = PageController(viewportFraction: 0.8, keepPage: false);
   var _pageIndex = 1;
   var _cardIndex = 0;
   @override
@@ -160,6 +163,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             ),
                           ),
                           onTap: () {
+                            controller.previousPage(
+                                duration: Duration(microseconds: 10),
+                                curve: Curves.bounceIn);
                             setState(() {
                               _pageIndex--;
                             });
@@ -210,6 +216,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               _pageIndex < 3
                   ? GestureDetector(
                       child: Container(
+                        height: 83,
+                        width: 83,
                         child: Stack(
                           children: <Widget>[
                             Container(
@@ -217,18 +225,38 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               child: Image.asset('assets/image/ellipse17.png'),
                             ),
                             Positioned(
-                              top: height * 0.025,
-                              left: width * 0.43,
+                              top: height * 0.045,
+                              left: width * 0.075,
                               child: Image.asset(
                                 'assets/image/vector11.png',
                                 height: height * 0.023,
                                 width: width * 0.051,
                               ),
                             ),
+                            Positioned(
+                              top: height * 0.00001,
+                              left: width * 0.0001,
+                              right: width * 0.002,
+                              bottom: 1,
+                              child: CircularPercentIndicator(
+                                radius: 34.0,
+                                animation: true,
+                                animationDuration: 1200,
+                                lineWidth: 3.0,
+                                percent: _pageIndex > 1 ? 0.8 : 0.4,
+                                circularStrokeCap: CircularStrokeCap.butt,
+                                backgroundColor:
+                                    Color.fromRGBO(222, 222, 222, 1),
+                                progressColor: Color.fromRGBO(249, 216, 21, 1),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                       onTap: () {
+                        controller.nextPage(
+                            duration: Duration(microseconds: 10),
+                            curve: Curves.bounceIn);
                         setState(() {
                           _pageIndex++;
                           print('_pageIndex${_pageIndex}');

@@ -1,7 +1,6 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
-import 'package:flutter_complete_guide/samples/dotindicator.dart';
-import 'package:flutter_complete_guide/screens/flow2_Navigation/onboarding_screen.dart';
+import './screens/flow2_Navigation/onboarding_screen.dart';
 import 'screens/flow1_login/location_permission_given.dart';
 import 'screens/flow1_login/location_permission_not_given.dart';
 import 'screens/flow1_login/otp_screen.dart';
@@ -41,10 +40,7 @@ class MyApp extends StatelessWidget {
     //       );
     return MaterialApp(
       title: 'Rapido Screen',
-      // home: Flow2First(),
-      // home: PageIndicator(),
       home: OnboardingScreen(),
-      
     );
   }
 }
