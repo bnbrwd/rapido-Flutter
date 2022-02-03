@@ -3,6 +3,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
+  static const routeName = '/OnboardingScreen';
+
   @override
   State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
@@ -186,9 +188,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             top: height * 0.017,
                             left: width * 0.04,
                             child: Image.asset(
-                              'assets/image/drwer.png',
-                              height: height * 0.023,
-                              width: width * 0.051,
+                              'assets/image/drawer.png',
+                              height: height * 0.025,
+                              width: width * 0.053,
                             ),
                           ),
                         ],
@@ -204,6 +206,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: PageView.builder(
                   controller: controller,
                   // itemCount: pages.length,
+                  // physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (_, index) {
                     _cardIndex = index;
                     print("_cardIndex = ${_cardIndex}");

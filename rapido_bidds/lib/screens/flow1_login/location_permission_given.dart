@@ -223,7 +223,7 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                                   left: width * 0.035,
                                   child: GestureDetector(
                                     child: Image.asset(
-                                      'assets/image/drwer.png',
+                                      'assets/image/drawer.png',
                                       height: height * 0.023,
                                       width: width * 0.051,
                                     ),
@@ -235,7 +235,7 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                                   left: width * 0.04,
                                   child: GestureDetector(
                                     child: Image.asset(
-                                      'assets/image/drwer.png',
+                                      'assets/image/drawer.png',
                                       height: height * 0.023,
                                       width: width * 0.051,
                                     ),

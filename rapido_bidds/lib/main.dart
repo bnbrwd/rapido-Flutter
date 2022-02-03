@@ -36,6 +36,8 @@ class MyApp extends StatelessWidget {
     //               LocationPermissionGiven(), //registered
     //           LocationPermissionNotGiven.routeName: (ctx) =>
     //               LocationPermissionNotGiven(), //registered
+    //           OnboardingScreen.routeName: (ctx) =>
+    //               OnboardingScreen(), //registered
     //         },
     //       );
     return MaterialApp(

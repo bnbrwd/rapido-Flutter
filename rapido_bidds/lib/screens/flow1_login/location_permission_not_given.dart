@@ -1,6 +1,7 @@
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../flow2_Navigation/onboarding_screen.dart';
 import 'location_permission_given.dart';
 
 class LocationPermissionNotGiven extends StatefulWidget {
@@ -20,7 +21,7 @@ class _LocationPermissionNotGivenState
 
   void validate() {
     if (_formKey.currentState.validate()) {
-      // Navigator.of(context).pushNamed(LocationPermissionNotGiven.routeName);
+      Navigator.of(context).pushNamed(OnboardingScreen.routeName);
       print('validated');
     } else {
       print('Not Validated');
@@ -197,7 +198,7 @@ class _LocationPermissionNotGivenState
                                   left: width * 0.035,
                                   child: GestureDetector(
                                     child: Image.asset(
-                                      'assets/image/drwer.png',
+                                      'assets/image/drawer.png',
                                       height: height * 0.023,
                                       width: width * 0.051,
                                     ),
@@ -209,7 +210,7 @@ class _LocationPermissionNotGivenState
                                   left: width * 0.04,
                                   child: GestureDetector(
                                     child: Image.asset(
-                                      'assets/image/drwer.png',
+                                      'assets/image/drawer.png',
                                       height: height * 0.023,
                                       width: width * 0.051,
                                     ),
