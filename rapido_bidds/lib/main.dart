@@ -1,5 +1,9 @@
 import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/samples/googlemap.dart';
+import 'package:flutter_complete_guide/screens/flow2_Navigation/google_live_location.dart';
+import 'package:flutter_complete_guide/screens/flow2_Navigation/vehicle.dart';
+import 'package:flutter_complete_guide/screens/flow2_Navigation/vehicle_list_screen.dart';
 import './screens/flow2_Navigation/onboarding_screen.dart';
 import 'screens/flow1_login/location_permission_given.dart';
 import 'screens/flow1_login/location_permission_not_given.dart';
@@ -41,8 +45,15 @@ class MyApp extends StatelessWidget {
     //         },
     //       );
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Rapido Screen',
-      home: OnboardingScreen(),
+      // home: OnboardingScreen(),
+      // home: VehiclelistScreen(),
+      home: GoogleLiveLocation(),
+      routes: {
+        Vehicle.routeName: (ctx) => Vehicle(), //registered
+        OnboardingScreen.routeName: (ctx) => OnboardingScreen(), //registered
+      },
     );
   }
 }

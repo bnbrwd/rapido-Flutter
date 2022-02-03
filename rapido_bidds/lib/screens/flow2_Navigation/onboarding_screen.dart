@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'vehicle.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -280,7 +281,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           'Start',
                           style: TextStyle(fontSize: 16),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context)
+                              .pushNamed(Vehicle.routeName);
+                        },
                       ),
                     ),
               SizedBox(height: height * (24 / 640)),
