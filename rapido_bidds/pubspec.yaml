@@ -35,6 +35,8 @@ dependencies:
   google_maps_flutter: ^2.1.1
   location: ^4.3.0
   permission_handler: ^8.3.0
+  footer: ^0.0.4
+
 
 
 
@@ -84,7 +86,7 @@ flutter:
     - assets/image/car1.png
     - assets/image/cars11.jpg
     - assets/image/taxi.png
-
+    - assets/image/locationDenied.png
     
 
 

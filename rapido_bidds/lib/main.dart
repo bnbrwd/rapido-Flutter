@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_complete_guide/samples/googlemap.dart';
 import 'package:flutter_complete_guide/screens/flow2_Navigation/google_live_location.dart';
+import 'package:flutter_complete_guide/screens/flow2_Navigation/location_permission_option_screen.dart';
 import 'package:flutter_complete_guide/screens/flow2_Navigation/vehicle.dart';
 import 'package:flutter_complete_guide/screens/flow2_Navigation/vehicle_list_screen.dart';
 import './screens/flow2_Navigation/onboarding_screen.dart';
@@ -49,7 +50,8 @@ class MyApp extends StatelessWidget {
       title: 'Rapido Screen',
       // home: OnboardingScreen(),
       // home: VehiclelistScreen(),
-      home: GoogleLiveLocation(),
+      // home: GoogleLiveLocation(),
+      home: LocationPermissionUptionScreen(),
       routes: {
         Vehicle.routeName: (ctx) => Vehicle(), //registered
         OnboardingScreen.routeName: (ctx) => OnboardingScreen(), //registered
