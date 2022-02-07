@@ -1,8 +1,14 @@
+import 'dart:convert';
 import 'dart:io' show Platform;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_complete_guide/Model/login_request.dart';
+import 'package:flutter_complete_guide/Model/login_response.dart';
+import 'package:flutter_complete_guide/api/login_api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'otp_screen.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -22,12 +28,24 @@ class _LoginScreenState extends State<LoginScreen> {
   //       context, MaterialPageRoute(builder: (context) => OTPScreen()));
   // }
 
+  //async means always return future
+
+  LoginRequest loginRequest;
+
   var size, height, width, statusBarHeight;
 
   final _textEditController = TextEditingController();
 
   var _colorItem = false;
   var _validateInputText = false;
+
+  String _token;
+
+  @override
+  void initState() {
+    super.initState();
+    loginRequest = new LoginRequest();
+  }
 
   void _checkValidation() {
     if (_textEditController.text.length >= 10) {
@@ -62,10 +80,24 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  LoginResponse loginResponse;
+  Future<void> _submit() async {
+    loginResponse = await Provider.of<APIService>(context, listen: false)
+        .getLoginData(loginRequest);
+    print(loginResponse.data.token);
+    _token = loginResponse.data.token;
+    final prefs = await SharedPreferences.getInstance(); // storage
+    final userToken = json.encode({
+      'token': _token,
+    });
+    prefs.setString('userData', userToken);
+  }
+
   Widget getAndroidForm() {
     return TextFormField(
       onChanged: (_) => _checkValidation(),
       controller: _textEditController,
+
       maxLength: 10,
       decoration: InputDecoration(
           errorStyle: TextStyle(
@@ -93,6 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextStyle(color: !_colorItem ? Colors.grey : Colors.green),
           border: OutlineInputBorder()),
       keyboardType: TextInputType.number,
+      // onSaved: (input) => loginRequest.phone = input.toString(),
     );
   }
 
@@ -145,6 +178,11 @@ class _LoginScreenState extends State<LoginScreen> {
         // Navigator.of(context).pushNamed(OTPScreen.routeName);
         // validate();
         if (_colorItem) {
+          print('getContact${loginRequest.phone}');
+          print(loginRequest.toJson());
+          _submit();
+          //  APIService apiService = new APIService();
+          //  apiService.getLoginData(loginRequest);
           Navigator.of(context).pushNamed(OTPScreen.routeName);
         } else {
           setState(() {
@@ -180,6 +218,8 @@ class _LoginScreenState extends State<LoginScreen> {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
+    // print('ph-----------  ${_textEditController.text.toString()}');
+    loginRequest.phone = _textEditController.text;
     var padding2 = Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(

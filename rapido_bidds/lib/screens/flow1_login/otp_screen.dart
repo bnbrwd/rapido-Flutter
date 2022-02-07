@@ -1,10 +1,17 @@
+import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/Model/otp_verification_request.dart';
+import 'package:flutter_complete_guide/Model/otp_verification_response.dart';
+import 'package:flutter_complete_guide/api/login_api.dart';
+import 'package:flutter_complete_guide/screens/flow1_login/login_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'location_permission_given.dart';
 import 'package:otp_text_field/otp_text_field.dart';
-import 'package:otp_screen/otp_screen.dart';
 import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/style.dart';
 
@@ -31,10 +38,13 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
   //       builder: (context) => SuccessfulOtpScreen()));
   // }
 
-  var mobileNumber = '9887246792';
+  OtpVerificationRequest otpVerificationRequest;
+
+  var mobileNumber = '8951528560';
 
   var size, height, width, statusBarHeight;
   AnimationController controller;
+
   @override
   void initState() {
     startTimer();
@@ -46,6 +56,20 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
       });
     controller.repeat(reverse: true);
     super.initState();
+    otpVerificationRequest = new OtpVerificationRequest(otp: '', token: '');
+    // _getTokenGenerated();
+    // _submit();
+  }
+
+  // didChangeDependencies it always runs when page is open though
+  @override
+  void didChangeDependencies() {
+    //runs before build is executed
+
+    super.didChangeDependencies();
+    // _getTokenGenerated();
+    // _submit();
+    // _validateToken();
   }
 
   Timer _timer;
@@ -77,6 +101,57 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  String _token;
+
+  Future<void> _getTokenGenerated() async {
+    final prefs = await SharedPreferences.getInstance();
+
+    final extractedUserData =
+        json.decode(prefs.getString('userData')) as Map<String, Object>;
+    //convert String into Map
+    _token = extractedUserData['token'];
+    print(_token);
+    otpVerificationRequest.token = _token;
+    print(otpVerificationRequest.token);
+  }
+
+  var msg, status;
+
+  OtpVerificationResponse otpVerificationResponse;
+  Future<void> _submit() async {
+    otpVerificationResponse =
+        await Provider.of<APIService>(context, listen: false)
+            .getVerifyData(otpVerificationRequest);
+    print(otpVerificationResponse.message);
+    msg = otpVerificationResponse.message;
+    status = otpVerificationResponse.status.toString();
+  }
+
+  bool _vlidate = false;
+  void _validateToken() {
+    if (msg == 'success' || status == '100') {
+      _vlidate = true;
+    }
+  }
+
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('An Error Occured!'),
+        content: Text(message),
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Okey'),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
@@ -84,6 +159,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
+    // otpVerificationRequest.token = _token;
 
     var _otpTextField = OTPTextField(
       length: 6,
@@ -93,12 +169,17 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
       textFieldAlignment: MainAxisAlignment.spaceAround,
       fieldStyle: FieldStyle.underline,
       onCompleted: (pin) {
+        otpVerificationRequest.otp = pin;
         print("Completed: " + pin);
       },
       onChanged: (pin) {
         print("Changed: " + pin);
       },
     );
+
+     _getTokenGenerated();
+    _submit();
+    _validateToken();
 
     var _singleChildScrollView = SingleChildScrollView(
       child: Container(
@@ -135,8 +216,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
             SizedBox(height: height * 0.009),
             Align(
               alignment: Alignment.centerLeft,
-              child:
-                  Platform.isIOS ? _otpTextField : _otpTextField,
+              child: Platform.isIOS ? _otpTextField : _otpTextField,
             ),
             SizedBox(height: height * 0.018),
             Row(
@@ -198,16 +278,21 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(
                       Color.fromRGBO(249, 216, 21, 1)),
-                  foregroundColor: MaterialStateProperty.all(
-                      Color.fromRGBO(32, 33, 34, 1)),
+                  foregroundColor:
+                      MaterialStateProperty.all(Color.fromRGBO(32, 33, 34, 1)),
                 ),
                 child: Text(
                   'Verify',
                   style: TextStyle(fontSize: height * 0.03),
                 ),
                 onPressed: () {
-                  Navigator.of(context)
-                      .pushNamed(LocationPermissionGiven.routeName);
+                  // _getTokenGenerated();
+                  // _submit();
+                  // _validateToken();
+                  !_vlidate
+                      ? _showErrorDialog('Error')
+                      : Navigator.of(context)
+                          .pushNamed(LocationPermissionGiven.routeName);
                 },
               ),
             ),
