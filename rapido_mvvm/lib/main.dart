@@ -4,7 +4,7 @@ import 'package:flutter_complete_guide/user_login/repo/api_services.dart';
 import 'package:flutter_complete_guide/user_login/view/location_permission_given.dart';
 import 'package:flutter_complete_guide/user_login/view/location_permission_not_given.dart';
 import 'package:flutter_complete_guide/user_login/view/otp_screen.dart';
-import 'package:flutter_complete_guide/user_login/view/splash_screen.dart';
+import 'package:flutter_complete_guide/splash_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 
