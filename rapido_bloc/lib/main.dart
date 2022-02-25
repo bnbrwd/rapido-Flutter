@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rapido_bloc/bloc/locationpermission_given_bloc.dart';
 import 'package:rapido_bloc/bloc/login_bloc.dart';
 import 'package:rapido_bloc/bloc/otp_verify_bloc.dart';
 import 'package:rapido_bloc/data/network_service.dart';
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             create: (context) =>
                 OtpVerifyBloc(repository: repository, loginBloc: loginBloc)),
+         BlocProvider(create: (context) => LocationpermissionGivenBloc(repository: repository)),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

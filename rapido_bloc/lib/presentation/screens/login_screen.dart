@@ -73,33 +73,34 @@ class _LoginScreenState extends State<LoginScreen> {
             controller: _textEditController,
             maxLength: 10,
             decoration: InputDecoration(
-                errorText: snapshot.hasError ? snapshot.error.toString() : null,
-                errorStyle: TextStyle(
-                  color:
-                      snapshot.hasError ? Color(0xFFE63946) : Color(0xFF60AD9C),
-                ),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: snapshot.hasError
-                        ? BorderSide(color: Color(0xFF9E9E9E))
-                        : BorderSide(color: Colors.green)),
-                counter: SizedBox.shrink(),
-                prefixIcon: SizedBox(
-                  width: width * 0.075,
-                  height: height * 0.0375,
-                  child: Center(
-                    child: Text(
-                      '+91',
-                      style: TextStyle(color: Colors.black),
-                    ),
+              errorText: snapshot.hasError ? snapshot.error.toString() : null,
+              errorStyle: TextStyle(
+                color:
+                    snapshot.hasError ? Color(0xFFE63946) : Color(0xFF60AD9C),
+              ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: snapshot.hasError
+                      ? BorderSide(color: Color(0xFF9E9E9E))
+                      : BorderSide(color: Colors.green)),
+              counter: SizedBox.shrink(),
+              prefixIcon: SizedBox(
+                width: width * 0.075,
+                height: height * 0.0375,
+                child: Center(
+                  child: Text(
+                    '+91',
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
-                label: Text(
-                  'Phone number',
-                  style: TextStyle(
-                    color: snapshot.hasError ? Colors.red : Colors.green,
-                  ),
+              ),
+              label: Text(
+                'Phone number',
+                style: TextStyle(
+                  color: snapshot.hasError ? Colors.red : Colors.green,
                 ),
-                border: OutlineInputBorder()),
+              ),
+              border: OutlineInputBorder(),
+            ),
             keyboardType: TextInputType.number,
           );
         });
@@ -194,10 +195,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     BlocProvider.of<LoginBloc>(context)
                         .add(LoginEventRequested(phone: _phone));
                     // Navigator.of(context).pushNamed(OTP_SCREEN_ROUTE);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => OTPScreen()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => OTPScreen()));
                   },
           );
         });

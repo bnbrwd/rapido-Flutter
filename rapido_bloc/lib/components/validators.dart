@@ -121,5 +121,29 @@ mixin Validators {
       }
     },
   );
+
+  var cityValidator = StreamTransformer<String, String>.fromHandlers(
+    handleData: (city, sink) {
+      if (city.isEmpty) {
+        return sink.addError("This field can't be empty");
+      }
+
+      if (city.length > 32) {
+        return sink.addError("City can't be more than 32 characters");
+      }
+      if (city.length < 3) {
+        return sink.addError("City is too short");
+      }
+      if (city.contains(RegExp(r'[0-9]'))) {
+        return sink.addError("City field can't contain numbers");
+      }
+      if (!RegExp(r"^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$")
+          .hasMatch(city)) {
+        return sink.addError("Invalid City");
+      } else {
+        sink.add(city);
+      }
+    },
+  );
 }
 

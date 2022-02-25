@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rapido_bloc/bloc/locationpermission_given_bloc.dart';
 import 'package:rapido_bloc/bloc/login_bloc.dart';
 import 'package:rapido_bloc/bloc/otp_verify_bloc.dart';
 import 'package:rapido_bloc/constant/strings.dart';
@@ -41,11 +42,15 @@ class AppRouter {
               repository: repository,
               loginBloc: loginBloc,
             ),
-            child:const OTPScreen(),
+            child: const OTPScreen(),
           ),
         );
       case LOCATIONPERMISSION_GIVEN_ROUTE:
-        return MaterialPageRoute(builder: (_) => LocationPermissionGiven());
+        return MaterialPageRoute(
+            builder: (_) => BlocProvider(
+                  create: (context) => LocationpermissionGivenBloc(repository: repository),
+                  child: LocationPermissionGiven(),
+                ));
 
       case LOCATIONPERMISSION_NOT_GIVEN_ROUTE:
         return MaterialPageRoute(builder: (_) => LocationPermissionNotGiven());

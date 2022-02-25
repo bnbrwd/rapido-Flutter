@@ -35,4 +35,6 @@ class Repository {
     final otpResponseRaw = await networkService.getOtpVerify(request);
     return res.welcomeFromJson(otpResponseRaw.body);
   }
+
+  getLocationPermisionGiven(String city, String name) {}
 }

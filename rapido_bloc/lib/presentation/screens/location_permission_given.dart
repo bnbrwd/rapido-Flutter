@@ -1,6 +1,10 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io' show Platform;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rapido_bloc/bloc/locationpermission_given_bloc.dart';
 import 'package:rapido_bloc/presentation/screens/location_permission_not_given.dart';
 
 class LocationPermissionGiven extends StatefulWidget {
@@ -47,6 +51,8 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc =
+        Provider.of<LocationpermissionGivenBloc>(context, listen: false);
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
     // getting the size of the window
     size = MediaQuery.of(context).size;
@@ -66,10 +72,9 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
           //   borderRadius: BorderRadius.circular(5),
           // ),
           decoration: BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(width: 1, color: Colors.black54)),
-              // borderRadius: BorderRadius.circular(5),
-            ),
+            border: Border(bottom: BorderSide(width: 1, color: Colors.black54)),
+            // borderRadius: BorderRadius.circular(5),
+          ),
           textInputAction: TextInputAction.done,
           onFieldSubmitted: (_) {
             FocusScope.of(context).requestFocus(_cityFocusNode);
@@ -112,43 +117,41 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
         //   keyboardType: TextInputType.name,
         // ),
 
-        child:  CupertinoTextFormFieldRow(
-            // prefix: Text('Hello'),
-            padding: EdgeInsets.only(
-              left: width * 0.005,
-              right: width * 0.005,
-            ),
-
-            // decoration: BoxDecoration(
-            //   border: Border.all(),
-            //   borderRadius: BorderRadius.circular(5),
-            // ),
-            decoration: BoxDecoration(
-              border:
-                  Border(bottom: BorderSide(width: 1, color: Colors.black54)),
-              // borderRadius: BorderRadius.circular(5),
-            ),
-
-            // textInputAction: TextInputAction.done,
-            // onFieldSubmitted: (_) {
-            //   FocusScope.of(context).requestFocus(_cityFocusNode);
-            //   //jump to next form from title for focus when we click next from kaypad. i.e price form field
-            // },
-            validator: (value) {
-              if (value!.isEmpty) {
-                return 'Required';
-              }
-              if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
-                return null;
-              }
-              if (value.startsWith(RegExp(r'[0-9]'))) {
-                return 'please enter valid City';
-              } else {
-                return null;
-              }
-            },
+        child: CupertinoTextFormFieldRow(
+          // prefix: Text('Hello'),
+          padding: EdgeInsets.only(
+            left: width * 0.005,
+            right: width * 0.005,
           ),
-        
+
+          // decoration: BoxDecoration(
+          //   border: Border.all(),
+          //   borderRadius: BorderRadius.circular(5),
+          // ),
+          decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(width: 1, color: Colors.black54)),
+            // borderRadius: BorderRadius.circular(5),
+          ),
+
+          // textInputAction: TextInputAction.done,
+          // onFieldSubmitted: (_) {
+          //   FocusScope.of(context).requestFocus(_cityFocusNode);
+          //   //jump to next form from title for focus when we click next from kaypad. i.e price form field
+          // },
+          validator: (value) {
+            if (value!.isEmpty) {
+              return 'Required';
+            }
+            if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
+              return null;
+            }
+            if (value.startsWith(RegExp(r'[0-9]'))) {
+              return 'please enter valid City';
+            } else {
+              return null;
+            }
+          },
+        ),
       );
     }
 
@@ -272,32 +275,28 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                 SizedBox(height: height * 0.012),
                 Platform.isIOS
                     ? _getiOSFormForName()
-                    : TextFormField(
-                        // maxLength: 10,
-                        decoration: InputDecoration(
-                          counter: SizedBox.shrink(),
-                          border: OutlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context).requestFocus(_cityFocusNode);
-                          //jump to next form from title for focus when we click next from kaypad. i.e price form field
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Required';
-                          }
-                          if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
-                            return null;
-                          }
-                          if (value.startsWith(RegExp(r'[0-9]'))) {
-                            return 'please enter valid name';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
+                    : StreamBuilder<String>(
+                        stream: bloc.name,
+                        builder: (context, snapshot) {
+                          return TextFormField(
+                            // maxLength: 10,
+                            onChanged: bloc.changeName,
+                            decoration: InputDecoration(
+                              errorText: snapshot.hasError
+                                  ? snapshot.error.toString()
+                                  : null,
+                              counter: SizedBox.shrink(),
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.name,
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: (_) {
+                              FocusScope.of(context)
+                                  .requestFocus(_cityFocusNode);
+                              //jump to next form from title for focus when we click next from kaypad. i.e price form field
+                            },
+                          );
+                        }),
                 SizedBox(height: height * 0.025),
                 Align(
                   alignment: Alignment.centerLeft,
@@ -312,29 +311,24 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                 SizedBox(height: height * 0.012),
                 Platform.isIOS
                     ? _getiOSForm()
-                    : TextFormField(
-                        // maxLength: 10,
-                        decoration: InputDecoration(
-                          counter: SizedBox.shrink(),
-                          border: OutlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.name,
-                        textInputAction: TextInputAction.next,
-                        focusNode: _cityFocusNode, //focus register
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Required';
-                          }
-                          if (value.startsWith(RegExp(r'[A-Z][a-z]'))) {
-                            return null;
-                          }
-                          if (value.startsWith(RegExp(r'[0-9]'))) {
-                            return 'please enter valid City';
-                          } else {
-                            return null;
-                          }
-                        },
-                      ),
+                    : StreamBuilder<String>(
+                        stream: bloc.city,
+                        builder: (context, snapshot) {
+                          return TextFormField(
+                            // maxLength: 10,
+                            onChanged: bloc.changeCity,
+                            decoration: InputDecoration(
+                              counter: SizedBox.shrink(),
+                              errorText: snapshot.hasError
+                                  ? snapshot.error.toString()
+                                  : null,
+                              border: OutlineInputBorder(),
+                            ),
+                            keyboardType: TextInputType.name,
+                            textInputAction: TextInputAction.next,
+                            focusNode: _cityFocusNode, //focus register
+                          );
+                        }),
                 SizedBox(height: height * (31 / 640)),
                 SizedBox(
                   width: double.infinity,
