@@ -34,7 +34,6 @@ class AppRouter {
           ),
         );
       case OTP_SCREEN_ROUTE:
-        // final loginRes = settings.arguments as LoginResponse;
         return MaterialPageRoute(
           //by wraping with BlocProvider we can listen data that emitted by cubit
           builder: (_) => BlocProvider(
@@ -42,7 +41,7 @@ class AppRouter {
               repository: repository,
               loginBloc: loginBloc,
             ),
-            child: const OTPScreen(),
+            child:const OTPScreen(),
           ),
         );
       case LOCATIONPERMISSION_GIVEN_ROUTE:

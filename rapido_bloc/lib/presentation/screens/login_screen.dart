@@ -1,9 +1,13 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'dart:io' show Platform;
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 import 'package:rapido_bloc/bloc/login_bloc.dart';
+import 'package:rapido_bloc/constant/strings.dart';
 import 'package:rapido_bloc/presentation/screens/otp_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,8 +20,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   var size, height, width, statusBarHeight;
   final _textEditController = TextEditingController();
-  var _colorItem = false;
-  var _validateInputText = false;
+  // var _colorItem = false;
+  // var _validateInputText = false;
   // late String _phone;
 
   @override
@@ -25,17 +29,17 @@ class _LoginScreenState extends State<LoginScreen> {
     super.initState();
   }
 
-  void _checkValidation() {
-    if (_textEditController.text.length >= 10) {
-      setState(() {
-        _colorItem = true;
-      });
-    } else {
-      setState(() {
-        _colorItem = false;
-      });
-    }
-  }
+  // void _checkValidation() {
+  //   if (_textEditController.text.length >= 10) {
+  //     setState(() {
+  //       _colorItem = true;
+  //     });
+  //   } else {
+  //     setState(() {
+  //       _colorItem = false;
+  //     });
+  //   }
+  // }
 
   var _formKey = GlobalKey<FormState>();
 
@@ -58,123 +62,171 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Widget getAndroidForm() {
-    return TextFormField(
-      onChanged: (_) => _checkValidation(),
-      controller: _textEditController,
-
-      maxLength: 10,
-      decoration: InputDecoration(
-          errorStyle: TextStyle(
-              color: _colorItem
-                  ? Color.fromRGBO(96, 173, 156, 1)
-                  : Color.fromRGBO(230, 57, 70, 1)),
-          focusedBorder: OutlineInputBorder(
-              borderSide: !_colorItem
-                  ? BorderSide(color: Colors.grey)
-                  : BorderSide(color: Colors.green)),
-          counter: SizedBox.shrink(),
-          prefixIcon: SizedBox(
-            width: width * 0.075,
-            height: height * 0.0375,
-            child: Center(
-              child: Text(
-                '+91',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ),
-          labelText: 'Phone number',
-          // hintText: 'Phone number',
-          labelStyle:
-              TextStyle(color: !_colorItem ? Colors.grey : Colors.green),
-          border: OutlineInputBorder()),
-      keyboardType: TextInputType.number,
-      // onSaved: (input) => _phone = input.toString(),
-    );
+  Widget getAndroidForm(BuildContext context) {
+    final bloc = Provider.of<LoginBloc>(context, listen: false);
+    return StreamBuilder<String>(
+        //here we will listen loginEmail to check updation using getter
+        stream: bloc.phoneNumber,
+        builder: (context, snapshot) {
+          return TextFormField(
+            onChanged: bloc.changePhoneNumber,
+            controller: _textEditController,
+            maxLength: 10,
+            decoration: InputDecoration(
+                errorText: snapshot.hasError ? snapshot.error.toString() : null,
+                errorStyle: TextStyle(
+                  color:
+                      snapshot.hasError ? Color(0xFFE63946) : Color(0xFF60AD9C),
+                ),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: snapshot.hasError
+                        ? BorderSide(color: Color(0xFF9E9E9E))
+                        : BorderSide(color: Colors.green)),
+                counter: SizedBox.shrink(),
+                prefixIcon: SizedBox(
+                  width: width * 0.075,
+                  height: height * 0.0375,
+                  child: Center(
+                    child: Text(
+                      '+91',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+                label: Text(
+                  'Phone number',
+                  style: TextStyle(
+                    color: snapshot.hasError ? Colors.red : Colors.green,
+                  ),
+                ),
+                border: OutlineInputBorder()),
+            keyboardType: TextInputType.number,
+          );
+        });
   }
 
-  Widget getiOSForm() {
+  Widget getiOSForm(BuildContext context) {
+    final bloc = Provider.of<LoginBloc>(context, listen: false);
     return Container(
       height: height * 0.087,
       width: width * 0.911,
-      child: CupertinoTextField(
-        onChanged: (_) => _checkValidation(),
-        controller: _textEditController,
-        maxLength: 10,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(6),
-          border: !_colorItem
-              ? Border.all(color: Colors.grey)
-              : Border.all(color: Colors.green),
-        ),
-        prefix: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: SizedBox(
-            width: width * 0.075,
-            height: height * 0.0375,
-            child: Center(
-              child: Text(
-                '+91',
-                style: TextStyle(color: Colors.black),
+      child: StreamBuilder<String>(
+          stream: bloc.phoneNumber,
+          builder: (context, snapshot) {
+            return CupertinoTextField(
+              onChanged: bloc.changePhoneNumber,
+              controller: _textEditController,
+              maxLength: 10,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(6),
+                border: snapshot.hasError
+                    ? Border.all(color: Colors.red)
+                    : Border.all(color: Colors.green),
               ),
-            ),
-          ),
-        ),
-        placeholder: 'Phone number',
-        keyboardType: TextInputType.number,
-      ),
+              prefix: Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: SizedBox(
+                  width: width * 0.075,
+                  height: height * 0.0375,
+                  child: Center(
+                    child: Text(
+                      '+91',
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+              placeholder: 'Phone number',
+              keyboardType: TextInputType.number,
+            );
+          }),
     );
   }
 
   Widget _getAndroidButton(BuildContext context) {
-    return ElevatedButton(
-      style: ButtonStyle(
-        backgroundColor: _colorItem
-            ? MaterialStateProperty.all(Colors.yellow[600])
-            : MaterialStateProperty.all(Colors.grey[400]),
-        foregroundColor: MaterialStateProperty.all(Colors.black),
-      ),
-      child: Text(
-        'Verify',
-        style: TextStyle(fontSize: 16),
-      ),
-      onPressed: () {
-        if (_colorItem) {
-          final _phone = _textEditController.text.toString();
-          print('ph-----------  ${_textEditController.text.toString()}');
-          BlocProvider.of<LoginBloc>(context).add(LoginEventRequested(phone: _phone));
-          Navigator.of(context).pushNamed(OTPScreen.routeName);
-        } else {
-          setState(() {
-            _validateInputText = true;
-          });
-        }
+    final bloc = Provider.of<LoginBloc>(context, listen: false);
+    return StreamBuilder<String>(
+        stream: bloc.phoneNumber,
+        builder: (context, snapshot) {
+          // return ElevatedButton(
+          //   style: ButtonStyle(
+          //     backgroundColor: snapshot.hasError
+          //         ? MaterialStateProperty.all(Colors.grey[400])
+          //         : MaterialStateProperty.all(!snapshot.hasData
+          //             ? Colors.grey[400]
+          //             : Colors.yellow[600]),
+          //     foregroundColor: MaterialStateProperty.all(Colors.black),
+          //   ),
+          //   child: Text(
+          //     'Verify',
+          //     style: TextStyle(fontSize: 16),
+          //   ),
+          //   onPressed: snapshot.hasError || !snapshot.hasData
+          //       ? null
+          //       : () {
+          //           final _phone = _textEditController.text.toString();
+          //           print(
+          //               'ph-----------  ${_textEditController.text.toString()}');
+          //           BlocProvider.of<LoginBloc>(context)
+          //               .add(LoginEventRequested(phone: _phone));
+          //           Navigator.of(context).pushNamed(OTP_SCREEN_ROUTE);
+          //         },
+          // );
+          return ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: snapshot.hasError
+                  ? MaterialStateProperty.all(Colors.grey[400])
+                  : MaterialStateProperty.all(!snapshot.hasData
+                      ? Colors.grey[400]
+                      : Colors.yellow[600]),
+              foregroundColor: MaterialStateProperty.all(Colors.black),
+            ),
+            child: Text(
+              'Verify',
+              style: TextStyle(fontSize: 16),
+            ),
+            onPressed: snapshot.hasError || !snapshot.hasData
+                ? null
+                : () {
+                    final _phone = _textEditController.text.toString();
+                    print(
+                        'ph-----------  ${_textEditController.text.toString()}');
+                    BlocProvider.of<LoginBloc>(context)
+                        .add(LoginEventRequested(phone: _phone));
+                    // Navigator.of(context).pushNamed(OTP_SCREEN_ROUTE);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => OTPScreen()));
+                  },
+          );
+        });
+  }
+
+  Widget _getiOSButton(BuildContext context) {
+    final bloc = Provider.of<LoginBloc>(context, listen: false);
+    return StreamBuilder<String>(
+      stream: bloc.phoneNumber,
+      builder: (context, snapshot) {
+        return CupertinoButton(
+          color: snapshot.hasError ? Colors.grey[400] : Colors.yellow[600],
+          child: Text(
+            'Verify',
+            style: TextStyle(fontSize: 16, color: Colors.black),
+          ),
+          onPressed: snapshot.hasError
+              ? null
+              : () {
+                  Navigator.of(context).pushNamed(OTPScreen.routeName);
+                },
+        );
       },
     );
   }
 
-  Widget _getiOSButton() {
-    return CupertinoButton(
-        color: _colorItem ? Colors.yellow[600] : Colors.grey[400],
-        child: Text(
-          'Verify',
-          style: TextStyle(fontSize: 16, color: Colors.black),
-        ),
-        onPressed: () {
-          if (_colorItem) {
-            // userViewModel.getUserLogin();
-            // Navigator.of(context).pushNamed(OTPScreen.routeName);
-          } else {
-            setState(() {
-              _validateInputText = true;
-            });
-          }
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
+    // final bloc = Provider.of<LoginBloc>(context, listen: false);
     statusBarHeight = MediaQuery.of(context).viewPadding.top;
     // getting the size of the window
     size = MediaQuery.of(context).size;
@@ -201,7 +253,9 @@ class _LoginScreenState extends State<LoginScreen> {
             children: <Widget>[
               Form(
                 key: _formKey,
-                child: Platform.isIOS ? getiOSForm() : getAndroidForm(),
+                child: Platform.isIOS
+                    ? getiOSForm(context)
+                    : getAndroidForm(context),
               ),
             ],
           ),
@@ -217,16 +271,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 textAlign: TextAlign.start,
               ),
-              _validateInputText
-                  ? Text(
-                      'Invalid',
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 12,
-                      ),
-                      textAlign: TextAlign.start,
-                    )
-                  : Text(''),
             ],
           ),
           SizedBox(height: height * 0.198),
@@ -234,7 +278,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: double.infinity,
               height: height * 0.075,
               child: Platform.isIOS
-                  ? _getiOSButton()
+                  ? _getiOSButton(context)
                   : _getAndroidButton(context)),
         ],
       ),

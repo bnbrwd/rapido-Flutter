@@ -265,8 +265,12 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                       if (!isValid) {
                         _showErrorDialog(context, 'Not Valid');
                       } else {
-                        Navigator.of(context)
-                            .pushNamed(LocationPermissionGiven.routeName);
+                        // Navigator.of(context)
+                        //     .pushNamed(LocationPermissionGiven.routeName);
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => LocationPermissionGiven()));
                       }
                     },
                   );

@@ -5,7 +5,6 @@ import 'package:rapido_bloc/bloc/otp_verify_bloc.dart';
 import 'package:rapido_bloc/data/network_service.dart';
 import 'package:rapido_bloc/data/repository.dart';
 import 'package:rapido_bloc/presentation/router.dart';
-import 'package:rapido_bloc/splash_screen.dart';
 
 void main() {
   runApp(MyApp(
