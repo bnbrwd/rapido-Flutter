@@ -69,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
         stream: bloc.phoneNumber,
         builder: (context, snapshot) {
           return TextFormField(
+            key: const Key('mobileKey'),
             onChanged: bloc.changePhoneNumber,
             controller: _textEditController,
             maxLength: 10,
@@ -149,6 +150,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return StreamBuilder<String>(
         stream: bloc.phoneNumber,
         builder: (context, snapshot) {
+          var isValid = false;
+          !snapshot.hasError && snapshot.hasData
+              ? isValid = true
+              : isValid = false;
           // return ElevatedButton(
           //   style: ButtonStyle(
           //     backgroundColor: snapshot.hasError
@@ -174,6 +179,7 @@ class _LoginScreenState extends State<LoginScreen> {
           //         },
           // );
           return ElevatedButton(
+            key: const Key('tapLogin'),
             style: ButtonStyle(
               backgroundColor: snapshot.hasError
                   ? MaterialStateProperty.all(Colors.grey[400])
@@ -186,18 +192,27 @@ class _LoginScreenState extends State<LoginScreen> {
               'Verify',
               style: TextStyle(fontSize: 16),
             ),
-            onPressed: snapshot.hasError || !snapshot.hasData
-                ? null
-                : () {
-                    final _phone = _textEditController.text.toString();
-                    print(
-                        'ph-----------  ${_textEditController.text.toString()}');
-                    BlocProvider.of<LoginBloc>(context)
-                        .add(LoginEventRequested(phone: _phone));
-                    // Navigator.of(context).pushNamed(OTP_SCREEN_ROUTE);
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => OTPScreen()));
-                  },
+            // onPressed: snapshot.hasError || !snapshot.hasData
+            //     ? null
+            //     : () {
+            //         final _phone = _textEditController.text.toString();
+            //         print(
+            //             'ph-----------  ${_textEditController.text.toString()}');
+            //         BlocProvider.of<LoginBloc>(context)
+            //             .add(LoginEventRequested(phone: _phone));
+            //         // Navigator.of(context).pushNamed(OTP_SCREEN_ROUTE);
+            //         Navigator.push(context,
+            //             MaterialPageRoute(builder: (context) => OTPScreen()));
+            //       },
+            onPressed: () {
+              final _phone = _textEditController.text.toString();
+              print('ph-----------  ${_textEditController.text.toString()}');
+              BlocProvider.of<LoginBloc>(context)
+                  .add(LoginEventRequested(phone: _phone));
+              // Navigator.of(context).pushNamed(OTP_SCREEN_ROUTE);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => OTPScreen()));
+            },
           );
         });
   }

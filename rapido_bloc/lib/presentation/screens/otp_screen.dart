@@ -27,6 +27,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
   late String _token;
 
   bool isValid = false;
+  final navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   void initState() {
@@ -240,7 +241,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                     Center(
                       child: CircularProgressIndicator(),
                     );
-                  }else {
+                  } else {
                     print('k-----${state.otpVerificationResponse.message}');
                     if (state.otpVerificationResponse.message == 'success') {
                       setState(() {
@@ -251,6 +252,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                 },
                 builder: (context, state) {
                   return ElevatedButton(
+                    key: const Key('tapotpverify'),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                           Color.fromRGBO(249, 216, 21, 1)),
@@ -261,17 +263,44 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
                       'Verify',
                       style: TextStyle(fontSize: height * 0.03),
                     ),
+                    // onPressed: () {
+                    //   if (!isValid) {
+                    //     _showErrorDialog(context, 'Not Valid');
+                    //   } else {
+                    //     // Navigator.of(context)
+                    //     //     .pushNamed(LocationPermissionGiven.routeName);
+                    //     Navigator.push(
+                    //         context,
+                    //         MaterialPageRoute(
+                    //             builder: (context) =>
+                    //                 LocationPermissionGiven()));
+                    //   }
+                    // },
                     onPressed: () {
-                      if (!isValid) {
-                        _showErrorDialog(context, 'Not Valid');
+                      if (mounted) {
+                        Navigator.pushReplacement(
+                            navigatorKey.currentContext!,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    LocationPermissionGiven()));
                       } else {
-                        // Navigator.of(context)
-                        //     .pushNamed(LocationPermissionGiven.routeName);
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => LocationPermissionGiven()));
+                        Navigator.pushReplacement(
+                            navigatorKey.currentContext!,
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    LocationPermissionGiven()));
                       }
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => LocationPermissionGiven()));
+
+                      // Navigator.of(context, rootNavigator: true).pop();
+                      // Navigator.pushReplacement(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (BuildContext context) =>
+                      //             LocationPermissionGiven()));
                     },
                   );
                 },
@@ -285,6 +314,7 @@ class _OTPScreenState extends State<OTPScreen> with TickerProviderStateMixin {
 
   Widget getOtpTextField(BuildContext context) {
     return OTPTextField(
+      key: const Key('otpentered'),
       length: 6,
       width: width * 0.91,
       fieldWidth: width * 0.109,

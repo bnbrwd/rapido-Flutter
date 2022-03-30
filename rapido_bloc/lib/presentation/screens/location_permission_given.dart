@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rapido_bloc/bloc/locationpermission_given_bloc.dart';
+import 'package:rapido_bloc/constant/strings.dart';
 import 'package:rapido_bloc/presentation/screens/location_permission_not_given.dart';
 
 class LocationPermissionGiven extends StatefulWidget {
@@ -279,6 +280,7 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                         stream: bloc.name,
                         builder: (context, snapshot) {
                           return TextFormField(
+                            key: const Key('namefield'),
                             // maxLength: 10,
                             onChanged: bloc.changeName,
                             decoration: InputDecoration(
@@ -315,6 +317,7 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                         stream: bloc.city,
                         builder: (context, snapshot) {
                           return TextFormField(
+                            key: const Key('cityfield'),
                             // maxLength: 10,
                             onChanged: bloc.changeCity,
                             decoration: InputDecoration(
@@ -334,6 +337,7 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                   width: double.infinity,
                   height: height * (48 / 640),
                   child: ElevatedButton(
+                    key: const Key('tapNext'),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(
                         Color.fromRGBO(249, 216, 21, 1),
@@ -346,9 +350,14 @@ class _LocationPermissionGivenState extends State<LocationPermissionGiven> {
                       style: TextStyle(fontSize: 16),
                     ),
                     onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  LocationPermissionNotGiven()));
                       // Navigator.of(context)
                       //     .pushNamed(LocationPermissionNotGiven.routeName);
-                      validate();
+                      // validate();
                     },
                   ),
                 ),

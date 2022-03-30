@@ -29,7 +29,8 @@ class Repository {
         .welcomeFromJson(loginResponseRaw.body); // response in string.
   }
 
-  Future<OtpVerificationResponse> verifyOtp({required String otp, required String token}) async {
+  Future<OtpVerificationResponse> verifyOtp(
+      {required String otp, required String token}) async {
     otpVerificationRequest = OtpVerificationRequest(otp: otp, token: token);
     final request = req.welcomeToJson(otpVerificationRequest);
     final otpResponseRaw = await networkService.getOtpVerify(request);
@@ -37,4 +38,6 @@ class Repository {
   }
 
   getLocationPermisionGiven(String city, String name) {}
+
+  getLocationPermisionNotGiven(String city, String name) {}
 }
