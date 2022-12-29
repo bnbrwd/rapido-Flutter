@@ -4,5 +4,5 @@ const LOCATIONPERMISSION_GIVEN_ROUTE = '/locationpermissiongiven';
 const LOCATIONPERMISSION_NOT_GIVEN_ROUTE = '/locationpermissionnotgiven';
 
 
-const String LOGIN_URL = 'http://staging-api.rapido.bid/api/v1/login';
-const String VERIFY_URL = 'http://staging-api.rapido.bid/api/v1/verify';
+const String LOGIN_URL = 'http://';
+const String VERIFY_URL = 'http:';
