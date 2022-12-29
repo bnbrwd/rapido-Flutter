@@ -1,6 +1,6 @@
 
-const String LOGIN_URL = 'http://staging-api.rapido.bid/api/v1/login';
-const String VERIFY_URL = 'http://staging-api.rapido.bid/api/v1/verify';
+const String LOGIN_URL = 'http://sbbbb';
+const String VERIFY_URL = 'bbbbbb';
 
 
 //errors
