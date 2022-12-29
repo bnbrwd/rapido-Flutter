@@ -19,7 +19,7 @@ import 'package:http/http.dart' as http;
 class APIService with ChangeNotifier {
   //OTP API CALL
   Future<LoginResponse> getLoginData(LoginRequest loginRequest) async {
-    const url = 'http://staging-api.rapido.bid/api/v1/login';
+    const url = 'http://';
     var response;
     var request = welcomeToJson.welcomeToJson(loginRequest);
     try {
@@ -46,7 +46,7 @@ class APIService with ChangeNotifier {
 
   Future<OtpVerificationResponse> getVerifyData(
       OtpVerificationRequest otpVerificationRequest) async {
-    const url = 'http://staging-api.rapido.bid/api/v1/verify';
+    const url = 'http://';
     var response;
     var request = req.welcomeToJson(otpVerificationRequest);
     try {
