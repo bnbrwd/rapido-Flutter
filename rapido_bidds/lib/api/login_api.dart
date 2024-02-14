@@ -46,7 +46,7 @@ class APIService with ChangeNotifier {
 
   Future<OtpVerificationResponse> getVerifyData(
       OtpVerificationRequest otpVerificationRequest) async {
-    const url = 'http://staging-api.rapido.bid/api/v1/verify';
+    const url = 'http://';
     var response;
     var request = req.welcomeToJson(otpVerificationRequest);
     try {
