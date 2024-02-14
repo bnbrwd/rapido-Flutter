@@ -1,6 +1,7 @@
 
-const String LOGIN_URL = 'hhhhhh';
-const String VERIFY_URL = 'jjjjk';
+
+const String LOGIN_URL = 'http://sbbbb';
+const String VERIFY_URL = 'bbbbbb';
 
 
 //errors

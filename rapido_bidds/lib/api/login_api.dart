@@ -19,7 +19,7 @@ import 'package:http/http.dart' as http;
 class APIService with ChangeNotifier {
   //OTP API CALL
   Future<LoginResponse> getLoginData(LoginRequest loginRequest) async {
-    const url = 'http://';
+    const url = 'http://google.com';
     var response;
     var request = welcomeToJson.welcomeToJson(loginRequest);
     try {
